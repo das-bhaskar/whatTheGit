@@ -9,23 +9,6 @@ import google.generativeai as genai
 # Configure the Gemini API key
 genai.configure(api_key=os.environ.get("GOOGLE_API_KEY", ""))
 
-def clear_directory(directory):
-    """
-    Clear the contents of a directory.
-    
-    Args:
-        directory (str): The directory to clear.
-    """
-    for filename in os.listdir(directory):
-        file_path = os.path.join(directory, filename)
-        try:
-            if os.path.isfile(file_path):
-                os.unlink(file_path)
-            elif os.path.isdir(file_path):
-                shutil.rmtree(file_path)
-        except Exception as e:
-            st.warning(f"Failed to delete {file_path}. Reason: {e}")
-
 def clone_repository(repo_url, destination):
     """
     Clone a Git repository from the given URL to the specified destination.
@@ -37,13 +20,13 @@ def clone_repository(repo_url, destination):
     Returns:
         str: The path to the cloned repository.
     """
-    clear_directory(destination)  # Clear the directory before cloning
     try:
+        if os.path.exists(destination):
+            shutil.rmtree(destination)  # Delete the existing directory
         repo = git.Repo.clone_from(repo_url, destination)
         return repo.working_dir
     except git.exc.GitCommandError as e:
-        st.error("Error:", e)
-        return None
+        raise RuntimeError(f"Failed to clone repository: {e}")
 
 def traverse_repository(repo_path):
     """
@@ -72,7 +55,7 @@ def traverse_repository(repo_path):
 
     # Analyze README content
     if readme_content:
-        st.title("GitHub Respository Overview:")
+        st.title("GitHub Repository Overview:")
         analysis_result = analyze_with_gemini(readme_content)
         st.write(analysis_result)
         st.write("-----")
@@ -113,13 +96,13 @@ def analyze_with_gemini(content):
         return f"Request failed: {e}"
 
 def main():
-    st.title("GitHub Repo Analyser")
+    st.title("GitHub Repo Analyzer")
 
     # Get GitHub repository URL from user
     repo_url = st.text_input("Enter GitHub repository URL:")
     if st.button("Submit"):
         if repo_url:
-            destination = "/Users/bD/Desktop/Coding/projects/gitreader/repoload"  # Specify destination directory for cloning
+            destination = "cloned_repo"  # Specify destination directory for cloning
             cloned_repo_path = clone_repository(repo_url, destination)
             if cloned_repo_path:
                 st.success("Repository cloned successfully.")
