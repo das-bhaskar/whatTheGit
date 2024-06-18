@@ -1,6 +1,9 @@
 # whatTheGit
 # GitHub Repo Analyzer
 
+# Try it:
+https://whatthegit.streamlit.app
+
 This is a Streamlit web application for analyzing GitHub repositories. It clones the repository from the provided URL, traverses its content, and provides various metadata about the files present in the repository.
 
 ## Usage
@@ -17,5 +20,4 @@ To run this application locally, make sure you have Python installed along with 
 ```bash
 pip install streamlit gitpython google.generativeai
 
-Try it:
-https://whatthegit.streamlit.app
+
