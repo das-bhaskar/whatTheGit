@@ -16,3 +16,6 @@ To run this application locally, make sure you have Python installed along with 
 
 ```bash
 pip install streamlit gitpython google.generativeai
+
+Try it:
+https://whatthegit.streamlit.app
