@@ -1,7 +1,7 @@
 # whatTheGit
 # GitHub Repo Analyzer
 
-# Try it:
+ **Try it:**
 https://whatthegit.streamlit.app
 
 This is a Streamlit web application for analyzing GitHub repositories. It clones the repository from the provided URL, traverses its content, and provides various metadata about the files present in the repository.
